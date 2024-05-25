@@ -39,4 +39,23 @@ Para ser precisos, la pipeline que tengo en mente es la siguiente:
 
 ## BERT
 
+Por fortuna para mí, NER sobre textos históricos ya ha sido explorado empleando variantes de BERT-Multilingual. Hasta donde yo sé, español, francés, inglés y alemán. El español lo he probado y funciona maravillosamente. La existencia de diversos modelos con la misma base creo que es argumento suficiente para la generalización de este paso, con suficiente voluntad. En cuanto a mí respecta, con tenerlo disponible para los principales lenguajes europeos es suficiente.
 
+## Modelo de predicción
+
+Aquí viene lo bueno. El primer paso consiste en extraer tripletas relevantes de Wikidata. Wdsub está sobre la mesa como opción pero entretanto he rescatado WD-Scholia para llevar a cabo queries paginadas -dado que el nº de elementos es demasiado grande para una sola-. Principalmente estoy extrayendo personas nacidas en España antes de 1800 y tomando los atributos presentes en el EntitySchema de Q5; para acotarlo un poco, porque si no es un sindiós de propiedades.
+
+Los problemas son los de siempre; los datos son muy dispersos (para las propiedades potenciales, los valores de la entidad media se reducen al mínimo) y a menudo los valores que aparecen son contraproducentes. Por ejemplo, [Hernán Cortés](https://www.wikidata.org/wiki/Q7326) tiene como P734 Cortés, pero su padre [Martín](https://www.wikidata.org/wiki/Q50824534) carece de dicho valor. Para inferir cuestiones tales como relaciones paterno-filiales, plantea unas cuantas dudas... eso sin tener en cuenta que en estas épocas, por lo que veo la herencia de apellidos suele ser una cuestión aristocrática y que nuestros humildes jornaleros toman el nombre del padre... Podemos apañar el problema procesando nosotros mismos la combinación nombre/apellidos a partir de la etiqueta de la entidad...
+
+En fin, supongamos la creación de un grafo de conocimiento con las entidades extraídas en el párrafo previo. Queremos entrenar un modelo de predicción para que, al introducir las entidades detectadas por BERT, emita un juicio. ¿Qué modelo empleamos? Bueno, la predicción de enlaces en KG tiene algoritmos de cierta relevancia, como ComplEx o SimplE. 
+
+Maldita sea la hora en que opté por usar la librería Stellargraph para tratar de aplicar ComplEx (viene integrado). En mi vida tuve que tratar con una librería tan contraproducente; la mayor parte de la documentación no se corresponde con el código real, y eso teniendo en cuenta que la documentación sólo plantea el entrenamiento (no el uso) del modelo sobre datasets (introducir los propios es una odisea) predefinidos (que tampoco funcionan). Después de unas cuantas lunas batallando con ello, he llegado a la conclusión de que está más roto que el alma moderna; no genera nada con sentido.
+
+Visto el panorama, he optado por obviar tales intermediarios y estudiar directamente la aplicación de estos modelos de predicción sobre Wikidata. Y hay cosas interesantes: existe [un dataset basado en Wikidata/Wikipedia](https://paperswithcode.com/sota/link-prediction-on-wikidata5m) , sobre el cual se han aplicado diversos modelos como KGT5-context, ComplEx, SimplE, etc. Tengo por delante más combates con esto, pero parece más prometedor que lo anterior; cuanto menos, es más próximo a nuestras pretensiones.
+
+## Creación de entidades 
+
+Llegado este punto, lo peor ha pasado; una vez cruzado Moore, OK, las probabilidades de ser arrollado por un tornado se reducen drásticamente. La información que se puede extraer del NER es escasa:
+* Nombre (y apellidos si PER) es lo único directo; no gran cosa, pero los apellidos guardan gran significado para nosotros.
+* Lugar. Las construcciones PER \[de\] LOC son relativamente comunes. Creo que nos podemos permitir el lujo.
+* País y fecha. Extrapolación de los metadatos del documento.

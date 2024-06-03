@@ -3,6 +3,7 @@
 ## Contenidos
 
 * [Core](./lb/core.md)
+* [Link](./lb/link.md)
 
 Hace escasas lunas, Labra me sugirió plasmar por escrito mis divagaciones académicas con el objeto de organizar mis penurias y descubrimientos. Siempre me ha gustado escribir, y dado que esta filosofía la avala el mismísimo Umberto Eco, ¿qué puede objetar un humilde flagelante como yo?
 

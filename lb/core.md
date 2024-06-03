@@ -53,6 +53,8 @@ Maldita sea la hora en que opté por usar la librería Stellargraph para tratar 
 
 Visto el panorama, he optado por obviar tales intermediarios y estudiar directamente la aplicación de estos modelos de predicción sobre Wikidata. Y hay cosas interesantes: existe [un dataset basado en Wikidata/Wikipedia](https://paperswithcode.com/sota/link-prediction-on-wikidata5m) , sobre el cual se han aplicado diversos modelos como KGT5-context, ComplEx, SimplE, etc. Tengo por delante más combates con esto, pero parece más prometedor que lo anterior; cuanto menos, es más próximo a nuestras pretensiones.
 
+*Ver [el artículo al respecto](./link.md)*
+
 ## Creación de entidades 
 
 Llegado este punto, lo peor ha pasado; una vez cruzado Moore, OK, las probabilidades de ser arrollado por un tornado se reducen drásticamente. La información que se puede extraer del NER es escasa:

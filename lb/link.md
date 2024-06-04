@@ -2,9 +2,11 @@
 
 Expando aquí la cuestión de los modelos de predicción de enlaces empleando Wikidata. Más fructífero de lo que cabría esperar. [Ambientemos.](https://www.youtube.com/watch?v=3cKy5Qk0QMM)
 
+PD: se me ha venido el nombre "Ashexander". Tengo que encontrar alguna excusa para usarlo.
+
 ## Propuesta
 
-Bien, la idea consta de dos fases: primero, realizaremos una *predicción semi-inductiva* sobre un subconjunto de Wikidata como WikiKG90Mv2 (que está preparado para estas labores)ón; esto es, consideremos que las entidades obtenidas en NER son nodos no vistos
+Bien, la idea consta de dos fases: primero, realizaremos una *predicción semi-inductiva* sobre un subconjunto de Wikidata como WikiKG90Mv2 (que está preparado para estas labores); esto es, consideremos que las entidades obtenidas en NER son nodos no vistos.
  del grafo de conocimiento de Wikidata, y -asumiendo tripletas de la forma (?head ?relation ?tail) - obtengamos una predicción de _?tail_ siendo _?head_ un nodo no visto y _?tail_ un nodo visto (de ahí lo de semi-inductiva).
 
  ![../images/Prediccion.svg](https://raw.githubusercontent.com/ExarcaFidalgo/crystarium/master/images/Prediccion.svg)
@@ -22,7 +24,7 @@ Bien, la idea consta de dos fases: primero, realizaremos una *predicción semi-i
 
  Supongamos que de un texto histórico extraemos las siguientes entidades: (Alffonso Fernándiz, PER) (Fernando Suáriz, PER) (Borondés, LOC).
 
- El primer paso sería realizar una predicción semi-inductiva sobre Wikidata para cada una de estas entidades. Puesto que las dos primeras entidades se han identificado como personas, tiraríamos de [E10](https://www.wikidata.org/wiki/EntitySchema:E10)
+ El primer paso sería realizar una predicción semi-inductiva sobre Wikidata para cada una de estas entidades. Puesto que las dos primeras entidades se han identificado como personas, tiraríamos de [E10](https://www.wikidata.org/wiki/EntitySchema:E10).
 Realizamos pues una serie de predicciones tal que:
 * _(Alffonso Fernándiz, instance of, ?) => Human (-0.020665482)_
 * _(Alffonso Fernándiz, gender, ?) => male (-0.00043228792)_
@@ -46,7 +48,7 @@ Y, casualmente, en nuestro subconjunto de entidades extraídas, tenemos un _(Fer
 
 Todo periplo del héroe tiene sus retos y tentaciones, naturalmente. 
 
-1. Wikidata emplea un modelo de identificación única que permite referir de manera singular a cualquier entidad/propiedad del conocimiento humano. El modelo KGT5 que estoy empleando, por algún motivo, opta por sacrificar esta excelencia en pos de utilizar etiquetas. No sólo eso, sino que si hay variables ortográficas con respecto a la entidad objetivo, parece indicar la entidad objetivo pero con la etiqueta incorrecta... Esto va a ser un DOLOR para conseguir los IDs (necesarios para extraer toda la información)
+1. Wikidata emplea un modelo de identificación única que permite referir de manera singular a cualquier entidad/propiedad del conocimiento humano. El modelo KGT5 que estoy empleando, por algún motivo, opta por sacrificar esta excelencia en pos de utilizar etiquetas. No sólo eso, sino que si hay variables ortográficas con respecto a la entidad objetivo, parece indicar la entidad objetivo pero con la etiqueta incorrecta... Esto va a ser un DOLOR para conseguir los IDs (necesarios para extraer toda la información).
 2. ¿Qué medida empleamos para indicar la probabilidad de acierto en las predicciones completamente inductivas? ¿Es posible siquiera? En todo caso, esto va a requerir una revisión posterior seguro.
 3. No trivial: ¿cómo definimos las reglas para las predicciones completamente inductivas? Ya que cada propiedad puede, y debe, ser un mundo.
 

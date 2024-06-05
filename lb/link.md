@@ -68,6 +68,6 @@ En lugar de _<human>_, ¿tal vez podríamos crear una nueva shape que describa a
 
 <father> EXTRA wdt:P31 {
   wdt:P735 [<human>/P734/P31/PQ642] * ;                    # given name
-  wdt:P734 [<human>/P735] * ;                    # family name
+  wdt:P734 [<human>/P734] * ;                    # family name
 }
 ```

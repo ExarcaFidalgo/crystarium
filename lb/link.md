@@ -63,7 +63,7 @@ En lugar de _<human>_, ¿tal vez podríamos crear una nueva shape que describa a
 
 ```
 <human> EXTRA wdt:P31 {
-  wdt:P22 @<human> *;
+  wdt:P22 @<father> *;
 }
 
 <father> EXTRA wdt:P31 {
@@ -71,5 +71,3 @@ En lugar de _<human>_, ¿tal vez podríamos crear una nueva shape que describa a
   wdt:P734 [<human>/P735] * ;                    # family name
 }
 ```
-
-Resumen: hablar con el CEO of Shex.

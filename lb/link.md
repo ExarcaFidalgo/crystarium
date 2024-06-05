@@ -59,7 +59,7 @@ Respecto al punto 3, yo pensaba en seguir tirando de Shex y de algún modo defin
 }
 ```
 
-En lugar de _<human>_, ¿tal vez podríamos crear una nueva shape que describa al padre?
+En lugar de _\<human\>_, ¿tal vez podríamos crear una nueva shape que describa al padre?
 
 ```
 <human> EXTRA wdt:P31 {
@@ -69,5 +69,81 @@ En lugar de _<human>_, ¿tal vez podríamos crear una nueva shape que describa a
 <father> EXTRA wdt:P31 {
   wdt:P735 [<human>/P734/P31/PQ642] * ;                    # given name
   wdt:P734 [<human>/P734] * ;                    # family name
+}
+```
+
+De acuerdo, no podemos. Shex no soporta estas capacidades. Al menos ahora tiene nombre oficial: _propery path_. Labra sugiere emplear SPARQL, y a continuación se listan sus ejemplos; pero hemos de tener en cuenta que hemos de extraer de la ecuación nuestras propias entidades, que se corresponden en los ejemplos con x e y (ya que obviamente no están presentes en Wikidata).
+
+
+La relación paternofilial viene dada por una de las siguientes condiciones:
+1. Comparten el mismo apellido.
+
+```
+:x :P734 :a .
+:y :P734 :a .
+=>
+:x :P22 :y 
+
+En SPARQL: 
+
+SELECT ?x ?y { ?x :P734 ?a . ?y :P735 ?a }
+
+```
+
+2. El apellido del hijo es un patronímico del nombre del padre (Fernández-Fernando).
+
+Ejemplo de wikidata: https://www.wikidata.org/wiki/Q164892
+
+```
+:x :P734 :a .
+:a :P31 :PatronimicFamilyName (Q114455398) {| :P642 :b |}
+:y :P735 :b 
+=> 
+:x P22 :y
+```
+
+Se podría expresar en SPARQL con una consulta CONSTRUCT: 
+https://w.wiki/AJ26
+
+Esto llega a inferencias graciosas como relacionar al Cid con Diegos aleatorios.
+PD: es interesante que SELECT es muchísimo más lento, por algún motivo.
+
+```
+CONSTRUCT {
+ ?x :padre ?y 
+} WHERE {
+  ?x wdt:P734 ?a .
+  ?a p:P31 ?ps .
+  ?ps ps:P31 wd:Q114455398
+  ?ps pq:P642 ?b .
+  ?y wdt:P735 ?b 
+}
+```
+
+Por ahora no hay tiempo para mucho más que tirar de esta clase de consultas, pero como trabajo futuro podría ser interesante definir un lenguaje que nos permita establecer las reglas deseadas en forma de _property paths_.
+
+Inventándonos un lenguaje de reglas tipo Prolog y similares para este caso:
+
+```
+Padre(?x,?y) :- wdt:P734(?x,?a), 
+                p:P31(?a, ?ps),
+                ps:P31(?ps, wd:Q114455398),
+                pq:P642(?ps, ?b),
+                wdt:P735(?y, ?b).
+                
+. . .
+```
+
+Inventándonos un lenguaje de reglas tipo Prolog tipo WShEx:
+
+```
+Padre(?x,?y) :- :P734(?x,?a), 
+                :P31(?a, [ wd:Q114455398 ] {| :P642(?ps, ?b) |},
+                :P735(?y, ?b) .
+
+. . .
+             
+<FamilyNameWithPatronymicValue> EXTRA :P31 {
+  :P31 [ :Q114455398 ] {| :P642 . * |}
 }
 ```

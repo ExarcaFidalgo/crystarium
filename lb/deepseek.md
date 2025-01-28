@@ -2,7 +2,7 @@ Bueno, creo que todo el paradigma acaba de cambiar por completo ya que de repent
 
 En fin, que aportando como entrada un fragmento complejo de las notarías, por ejemplo:
 
-"Connosçida cosa sea a quantos esta carta viren cómmo yo Pero Suáriz de Borondés, fillo de Suer Rodríguiz, uiendo a vos Alffonso Ferrándiz, oriz, e a uuestra muller María Áluarez, moradores en Ouiedo, el dolzal de una tierra que iaz y en Borondés,"
+"Connosçida cosa sea a quantos esta carta viren cómmo yo Menén Suáriz, morador en Borondés, e yo Loriença Suáriz, sua muller, dessenbargamos a vos Alffonso Fernándiz, oryz, morador enna çipdat de Oviedo, fillo de Aldonça Suáriz, hermana de mí, Menén Suáriz, e a vuestra muller María Álvariz, el sétimo de todos quantos heredamientos e lantados avían Suer Pérez e María Yánnez, padre e madre que foron de mi, Menén Suáriz, e de la dicha Aldonça Suáriz, vuestra madre, en Borondés e en Vallongo e en sos términos e en la alffoz de Grado, huquier que llos pertenesçían, tan bien los que ora están partidos commo por partir, el qual sétimo vos pertenez por nome de la dicha Aldonça Suáriz, vuestra madre."
 
   Obtenemos el siguiente resultado:
 

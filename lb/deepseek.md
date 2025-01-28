@@ -6,6 +6,7 @@ En fin, que aportando como entrada un fragmento complejo de las notarías, por e
 
   Obtenemos el siguiente resultado:
 
+```
 @prefix : <http://example.org/> .
 
 :MenénSuáriz a :Person ;
@@ -61,5 +62,5 @@ En fin, que aportando como entrada un fragmento complejo de las notarías, por e
 
 :AlffonsoFernándiz :inheritsFrom :AldonçaSuáriz ;
     :ownsPortionOf :Inheritances .
-
+```
 A estudiar: posible pipeline de retroalimentación con Wikidata para el enriquecimiento tanto de nuestro grafo como de Wikidata...

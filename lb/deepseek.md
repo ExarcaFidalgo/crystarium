@@ -1,66 +1,110 @@
 Bueno, creo que todo el paradigma acaba de cambiar por completo ya que de repente ha surgido un LLM que *sí* parece capaz de procesar textos del medievo (ya era hora). Supongo que Deepseek no ha hundido la bolsa estadounidense por nada.
 
-En fin, que aportando como entrada un fragmento complejo de las notarías, por ejemplo:
+En fin, que aportando como entrada el comando "Extract all entities and relations from the following text fragments from a 14th century Spanish corpus. The output must be displayed in Turtle format. Those entities that are of type Person, must have the attributes Name, Surname and Profession with their respective values, as long as these are available. Note that when a person's name is accompanied by ‘de X’, this is not part of the surname itself but the X denotes belonging to a place." y un fragmento complejo de las notarías, por ejemplo:
 
 "Connosçida cosa sea a quantos esta carta viren cómmo yo Menén Suáriz, morador en Borondés, e yo Loriença Suáriz, sua muller, dessenbargamos a vos Alffonso Fernándiz, oryz, morador enna çipdat de Oviedo, fillo de Aldonça Suáriz, hermana de mí, Menén Suáriz, e a vuestra muller María Álvariz, el sétimo de todos quantos heredamientos e lantados avían Suer Pérez e María Yánnez, padre e madre que foron de mi, Menén Suáriz, e de la dicha Aldonça Suáriz, vuestra madre, en Borondés e en Vallongo e en sos términos e en la alffoz de Grado, huquier que llos pertenesçían, tan bien los que ora están partidos commo por partir, el qual sétimo vos pertenez por nome de la dicha Aldonça Suáriz, vuestra madre."
 
   Obtenemos el siguiente resultado:
 
 ```
-@prefix : <http://example.org/> .
+@prefix ex: <http://example.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-:MenénSuáriz a :Person ;
-    :residesIn :Borondés ;
-    :marriedTo :LoriençaSuáriz ;
-    :childOf :SuerPérez, :MaríaYánnez ;
-    :siblingOf :AldonçaSuáriz .
+### Entities of Type Person
+ex:MenénSuáriz a ex:Person ;
+    ex:Name "Menén" ;
+    ex:Surname "Suáriz" ;
+    ex:residence ex:Borondés ;
+    ex:spouse ex:LoriençaSuáriz .
 
-:LoriençaSuáriz a :Person ;
-    :marriedTo :MenénSuáriz .
+ex:LoriençaSuáriz a ex:Person ;
+    ex:Name "Loriença" ;
+    ex:Surname "Suáriz" ;
+    ex:spouse ex:MenénSuáriz .
 
-:AlffonsoFernándiz a :Person ;
-    :residesIn :Oviedo ;
-    :marriedTo :MaríaÁlvariz ;
-    :childOf :AldonçaSuáriz .
+ex:AlffonsoFernándiz a ex:Person ;
+    ex:Name "Alffonso" ;
+    ex:Surname "Fernándiz" ;
+    ex:residence ex:Oviedo ;
+    ex:mother ex:AldonçaSuáriz ;
+    ex:spouse ex:MaríaÁlvariz .
 
-:MaríaÁlvariz a :Person ;
-    :marriedTo :AlffonsoFernándiz .
+ex:MaríaÁlvariz a ex:Person ;
+    ex:Name "María" ;
+    ex:Surname "Álvariz" ;
+    ex:spouse ex:AlffonsoFernándiz .
 
-:AldonçaSuáriz a :Person ;
-    :childOf :SuerPérez, :MaríaYánnez ;
-    :parentOf :AlffonsoFernándiz ;
-    :siblingOf :MenénSuáriz .
+ex:AldonçaSuáriz a ex:Person ;
+    ex:Name "Aldonça" ;
+    ex:Surname "Suáriz" ;
+    ex:child ex:AlffonsoFernándiz ;
+    ex:sibling ex:MenénSuáriz .
 
-:SuerPérez a :Person ;
-    :parentOf :MenénSuáriz, :AldonçaSuáriz ;
-    :spouseOf :MaríaYánnez .
+ex:SuerPérez a ex:Person ;
+    ex:Name "Suer" ;
+    ex:Surname "Pérez" ;
+    ex:spouse ex:MaríaYánnez ;
+    ex:child ex:MenénSuáriz, ex:AldonçaSuáriz .
 
-:MaríaYánnez a :Person ;
-    :parentOf :MenénSuáriz, :AldonçaSuáriz ;
-    :spouseOf :SuerPérez .
+ex:MaríaYánnez a ex:Person ;
+    ex:Name "María" ;
+    ex:Surname "Yánnez" ;
+    ex:spouse ex:SuerPérez ;
+    ex:child ex:MenénSuáriz, ex:AldonçaSuáriz .
 
-:Borondés a :Place ;
-    :residenceOf :MenénSuáriz, :LoriençaSuáriz .
+ex:IohanGonçáliz a ex:Person ;
+    ex:Name "Iohan" ;
+    ex:Surname "Gonçáliz" ;
+    ex:father ex:GonçaloSuáriz ;
+    ex:mother ex:MaríaÁlvariz .
 
-:Oviedo a :Place ;
-    :residenceOf :AlffonsoFernándiz, :MaríaÁlvariz .
+ex:GonçaloSuáriz a ex:Person ;
+    ex:Name "Gonçalo" ;
+    ex:Surname "Suáriz" ;
+    ex:spouse ex:MaríaÁlvariz ;
+    ex:child ex:IohanGonçáliz .
 
-:Vallongo a :Place ;
-    :associatedWith :Inheritances .
+ex:SuerDíazDeCortina a ex:Person ;
+    ex:Name "Suer" ;
+    ex:Surname "Díaz de Cortina" ;
+    ex:uncle ex:GarçíaSuáriz ;
+    ex:role "Fiador" .
 
-:Grado a :Place ;
-    :associatedWith :Inheritances .
+ex:GarçíaSuáriz a ex:Person ;
+    ex:Name "Garçía" ;
+    ex:Surname "Suáriz" ;
+    ex:nephew ex:SuerDíazDeCortina .
 
-:Inheritances a :Property ;
-    :locatedIn :Borondés, :Vallongo, :Grado ;
-    :ownedBy :SuerPérez, :MaríaYánnez ;
-    :portionBelongsTo :AlffonsoFernándiz ;
-    :portionValue "1/7" .
+### Entities of Type Location
+ex:Borondés a ex:Location ;
+    ex:name "Borondés" .
 
-:MenénSuáriz :refersTo :AlffonsoFernándiz, :MaríaÁlvariz ;
-    :describes :Inheritances .
+ex:Oviedo a ex:Location ;
+    ex:name "Oviedo" .
 
-:AlffonsoFernándiz :inheritsFrom :AldonçaSuáriz ;
-    :ownsPortionOf :Inheritances .
+ex:Vallongo a ex:Location ;
+    ex:name "Vallongo" .
+
+ex:Grado a ex:Location ;
+    ex:name "Grado" .
+
+### Entities of Type Event
+ex:PropertyTransfer a ex:Event ;
+    ex:date "1365-01-03"^^xsd:date ;
+    ex:location ex:Borondés, ex:Vallongo, ex:Grado ;
+    ex:involves ex:MenénSuáriz, ex:LoriençaSuáriz, ex:AlffonsoFernándiz, ex:MaríaÁlvariz ;
+    ex:description "Transfer of property rights to Alffonso Fernándiz and María Álvariz." .
+
+ex:LegalObligation a ex:Event ;
+    ex:date "1365-01-03"^^xsd:date ;
+    ex:involves ex:MenénSuáriz, ex:LoriençaSuáriz, ex:SuerDíazDeCortina ;
+    ex:description "Legal obligation to pay 50 maravedís if the agreement is violated." .
+
+### Relationships
+ex:MenénSuáriz ex:owns ex:PropertyInBorondés, ex:PropertyInVallongo, ex:PropertyInGrado .
+ex:AlffonsoFernándiz ex:inherits ex:PropertyInBorondés, ex:PropertyInVallongo, ex:PropertyInGrado .
+ex:SuerDíazDeCortina ex:guarantees ex:LegalObligation .
 ```
 A estudiar: posible pipeline de retroalimentación con Wikidata para el enriquecimiento tanto de nuestro grafo como de Wikidata...

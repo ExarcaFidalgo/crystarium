@@ -204,3 +204,4 @@ y un fragmento complejo de las notarías, por ejemplo:
 A estudiar: 
 * Posible pipeline de retroalimentación con Wikidata para el enriquecimiento tanto de nuestro grafo como de Wikidata...
 * Impacto de Shex/SHACL como mecanismo para las LLM...?
+* Zero-shot vs few-shot con framework de shapes.
